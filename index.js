@@ -282,6 +282,7 @@ function join (rtc, option) {
         console.log("init local stream success")
         // play stream with html element id "local_stream"
         rtc.localStream.play("local_stream")
+        document.querySelector('.video-view').classList.remove('hide');
 
         // publish local stream
         publish(rtc)
