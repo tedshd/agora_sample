@@ -20,6 +20,10 @@
       box-sizing: border-box;
       background: #ccc;
     }
+
+    .hide {
+      display: none;
+    }
   </style>
 </head>
 
@@ -76,6 +80,65 @@
 
     var fields = ["appID", "channel"]
 
+    class Option extends React.Component {
+      render() {
+        return (
+          <div className="row hide">
+            <div className="col s12">
+              <div className="input-field">
+                <label htmlFor="UID" className="active">UID</label>
+                <input type="number" placeholder="UID" name="uid" />
+              </div>
+              <div className="input-field">
+                <label htmlFor="cameraId" className="active">CAMERA</label>
+                <select name="cameraId" id="cameraId"></select>
+              </div>
+              <div className="input-field">
+                <label htmlFor="microphoneId" className="active">MICROPHONE</label>
+                <select name="microphoneId" id="microphoneId"></select>
+              </div>
+              <div className="input-field">
+                <label htmlFor="cameraResolution" className="active">CAMERA RESOLUTION</label>
+                <select name="cameraResolution" id="cameraResolution"></select>
+              </div>
+              <div className="row col s12">
+                <div className="row">
+                  <label htmlFor="mode" className="active">MODE</label>
+                </div>
+                <div className="row">
+                  <label>
+                    <input type="radio" className="with-gap" name="mode" defaultValue="live" defaultChecked />
+                    <span>live</span>
+                  </label>
+
+                  <label>
+                    <input type="radio" className="with-gap" name="mode" defaultValue="rtc" />
+                    <span>rtc</span>
+                  </label>
+                </div>
+              </div>
+              <div className="row col s12">
+                <div className="row">
+                  <label htmlFor="codec" className="active">CODEC</label>
+                </div>
+                <div className="row">
+                  <label>
+                    <input type="radio" className="with-gap" name="codec" defaultValue="h264" defaultChecked />
+                    <span>h264</span>
+                  </label>
+
+                  <label>
+                    <input type="radio" className="with-gap" name="codec" defaultValue="vp8" />
+                    <span>vp8</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+    }
+
     class Form extends React.Component {
       constructor(props) {
         super(props);
@@ -87,14 +150,16 @@
         this.joinChannel = this.joinChannel.bind(this);
         this.leaveChannel = this.leaveChannel.bind(this);
       }
-      joinChannel() {
+      joinChannel(e) {
+        e.preventDefault();
         var params = serializeformData(); // Data is feteched and serilized from the form element.
         if (validator(params, fields)) {
           join(rtc, params)
         }
 
       }
-      leaveChannel() {
+      leaveChannel(e) {
+        e.preventDefault();
         var params = serializeformData()
         if (validator(params, fields)) {
           leave(rtc)
@@ -103,22 +168,23 @@
       render() {
         return (
           <div className="uk-card uk-card-default uk-card-body uk-width-1-2@m">
-            <form>
+            <form id="form">
               <fieldset className="uk-fieldset">
                 <legend className="uk-legend">Input data</legend>
                 <div className="uk-margin">
                   <label htmlFor="channel">Channel</label>
-                  <input id="channel" className="uk-input" type="text" placeholder="Input Channel" defaultValue={this.state.channel} />
+                  <input id="channel" className="uk-input" type="text" placeholder="Input Channel" name="appID" defaultValue={this.state.channel} />
                 </div>
                 <div className="uk-margin">
                   <label htmlFor="app_id">APP ID</label>
-                  <input id="app_id" className="uk-input" type="text" placeholder="Input APP ID" defaultValue={this.state.appid} />
+                  <input id="app_id" className="uk-input" type="text" placeholder="Input APP ID" name="channel" defaultValue={this.state.appid} />
                 </div>
                 <div className="uk-margin">
                   <label htmlFor="token">Token</label>
-                  <input id="token" className="uk-input" type="text" placeholder="Input Token" defaultValue={this.state.token} />
+                  <input id="token" className="uk-input" type="text" placeholder="Input Token" name="token" defaultValue={this.state.token} />
                 </div>
               </fieldset>
+              <Option />
             </form>
             <button className="uk-button uk-button-primary" onClick={this.joinChannel}>Join</button><button className="uk-button uk-button-default" onClick={this.leaveChannel}>Leave</button>
           </div>
