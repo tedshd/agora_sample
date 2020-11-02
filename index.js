@@ -18,8 +18,7 @@ var resolutions = [
 ]
 
 function Toastify (options) {
-  document.querySelector('footer').innerText = options.text;
-  // M.toast({ html: options.text, classes: options.classes })
+  document.querySelector('header').innerText = options.text;
 }
 
 var Toast = {
